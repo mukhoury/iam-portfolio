@@ -16,10 +16,10 @@ one reproducible lab at a time, each written up the way I'd talk through it in a
 
 | # | Lab | Focus | Tools |
 |---|-----|-------|-------|
-| 01 | [LDAP Least-Privilege Group Policy](labs/01-ldap-least-privilege/) | RBAC · AuthN vs AuthZ · least privilege | LLDAP directory service |
-| 02 | [Entra ID Dynamic Groups & Conditional Access](labs/02-entra-dynamic-groups-conditional-access/) | ABAC · dynamic groups · Zero Trust · Conditional Access | Microsoft Entra ID (Premium P2) |
+| 01 | [Entra ID Dynamic Groups & Conditional Access](labs/01-entra-dynamic-groups-conditional-access/) | ABAC · dynamic groups · Zero Trust · Conditional Access | Microsoft Entra ID (Premium P2) |
 
-*More labs in progress — Okta SSO & lifecycle management.*
+*More labs in progress — Identity Governance (access packages, access reviews, PIM) and
+Application Identity (app registrations, SSO/SAML/OIDC), both in Microsoft Entra ID.*
 
 ---
 
