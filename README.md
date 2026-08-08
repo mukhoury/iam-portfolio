@@ -20,6 +20,10 @@ one reproducible lab at a time, each written up the way I'd talk through it in a
 | 2 | [Entra ID Identity Governance](labs/2-entra-identity-governance/) | Access packages · access reviews · PIM · Lifecycle Workflows | Microsoft Entra ID (P2 + ID Governance) |
 | 3 | [Identity Automation with Microsoft Graph PowerShell](labs/3-entra-graph-powershell/) | Graph API · offboarding detection controls · scope-aware scripting | Microsoft Graph PowerShell SDK |
 
+**Short links:** [mukhoury.github.io/iam-portfolio/lab1](https://mukhoury.github.io/iam-portfolio/lab1/) ·
+[lab2](https://mukhoury.github.io/iam-portfolio/lab2/) ·
+[lab3](https://mukhoury.github.io/iam-portfolio/lab3/)
+
 *Labs 2 and 3 are being written up. Application Identity (app registrations, SSO/SAML/OIDC)
 is next.*
 
