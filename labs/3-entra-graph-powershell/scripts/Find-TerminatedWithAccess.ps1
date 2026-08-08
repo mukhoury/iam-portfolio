@@ -141,7 +141,43 @@ Write-Host "Connected as $($context.Account) with all required permissions." -Fo
 Write-Host "Checking for terminated identities that still hold access...`n"
 
 # ---------------------------------------------------------------------------
-# 2. Build a SKU lookup so licenses report as names, not GUIDs
+# 2. Timezone handling
+# ---------------------------------------------------------------------------
+# Entra stores every timestamp in UTC. The Entra portal converts to the viewer's local time
+# on display; the PowerShell SDK does not. The same instant therefore reads 2:30 PM in the
+# portal and 9:30 PM here, and only one of those told you which zone it meant.
+#
+# An unlabeled timestamp is not evidence. This script reports UTC as the source of truth and
+# local time alongside it, both explicitly labeled, so nobody has to guess.
+#
+# Note also that the local offset is not a constant. Pacific is UTC-7 in summer (PDT) and
+# UTC-8 in winter (PST). Hardcoding either one puts every timestamp an hour out for a third
+# of the year, wrong in a way that still looks plausible.
+
+function ConvertTo-UtcDateTime {
+    param([datetime]$Value)
+    switch ($Value.Kind) {
+        ([System.DateTimeKind]::Utc)   { return $Value }
+        ([System.DateTimeKind]::Local) { return $Value.ToUniversalTime() }
+        default {
+            # Graph sent UTC. An Unspecified Kind means the SDK did not tag it, not that the
+            # value is local. Treating it as local here would shift every result by the offset.
+            return [datetime]::SpecifyKind($Value, [System.DateTimeKind]::Utc)
+        }
+    }
+}
+
+function Get-LocalOffsetLabel {
+    param([datetime]$UtcValue)
+    $offset = [System.TimeZoneInfo]::Local.GetUtcOffset($UtcValue)
+    $sign = if ($offset.Ticks -lt 0) { '-' } else { '+' }
+    return ('UTC{0}{1:hh\:mm}' -f $sign, $offset.Duration())
+}
+
+$nowUtc = [datetime]::UtcNow
+
+# ---------------------------------------------------------------------------
+# 3. Build a SKU lookup so licenses report as names, not GUIDs
 # ---------------------------------------------------------------------------
 # assignedLicenses on a user returns skuId only. Nobody can read a report of GUIDs.
 
@@ -161,13 +197,17 @@ try {
 $allUsers = Get-MgUser -All -Property "id,displayName,userPrincipalName,accountEnabled,department,employeeLeaveDateTime,assignedLicenses"
 
 # ---------------------------------------------------------------------------
-# 4. Keep only the users the directory believes have already left
+# 5. Keep only the users the directory believes have already left
 # ---------------------------------------------------------------------------
 # Note what is NOT in this filter: accountEnabled. That omission is the whole point.
+#
+# Both sides of the comparison are normalized to UTC. Comparing a UTC value from Graph
+# against a local Get-Date would shift the cutoff by the local offset, which near midnight
+# silently includes or excludes people.
 
 $departed = $allUsers | Where-Object {
     $null -ne $_.EmployeeLeaveDateTime -and
-    $_.EmployeeLeaveDateTime -lt (Get-Date)
+    (ConvertTo-UtcDateTime $_.EmployeeLeaveDateTime) -lt $nowUtc
 }
 
 if (@($departed).Count -eq 0) {
@@ -183,6 +223,11 @@ Write-Host "$(@($departed).Count) terminated identity(s) found. Checking entitle
 # ---------------------------------------------------------------------------
 
 $findings = foreach ($user in $departed) {
+
+    # --- timestamps ---------------------------------------------------------
+    $leaveUtc    = ConvertTo-UtcDateTime $user.EmployeeLeaveDateTime
+    $leaveLocal  = $leaveUtc.ToLocalTime()
+    $offsetLabel = Get-LocalOffsetLabel $leaveUtc
 
     # --- groups -------------------------------------------------------------
     # memberOf returns groups AND directory roles AND administrative units.
@@ -217,13 +262,14 @@ $findings = foreach ($user in $departed) {
         UPN            = $user.UserPrincipalName
         AccountEnabled = $user.AccountEnabled
         Department     = $user.Department
-        LeaveDate      = $user.EmployeeLeaveDateTime
+        LeaveDateUtc   = $leaveUtc.ToString('yyyy-MM-dd HH:mm:ss') + 'Z'
+        LeaveDateLocal = $leaveLocal.ToString('yyyy-MM-dd HH:mm:ss') + " ($offsetLabel)"
         # Floor, not round. A bare [int] cast rounds, so 2.6 days would report as 3 and 12
         # hours would report as 1 day. On an audit column, overstating how long someone has
         # held access after termination is the wrong direction to be wrong in.
         # The outer [int] is not redundant: [math]::Floor returns a double, which renders
-        # as "2.000" in a table.
-        DaysSinceLeave = [int][math]::Floor(((Get-Date) - $user.EmployeeLeaveDateTime).TotalDays)
+        # as "2.000" in a table. Both sides are UTC.
+        DaysSinceLeave = [int][math]::Floor(($nowUtc - $leaveUtc).TotalDays)
         GroupCount     = $memberships.Count
         Groups         = $groupNames
         LicenseCount   = $licenses.Count
@@ -254,13 +300,14 @@ if ($stillEntitled.Count -eq 0) {
 } else {
     Write-Host "$($stillEntitled.Count) terminated identity(s) still hold access:`n" -ForegroundColor Yellow
     $stillEntitled |
-        Format-Table Name, AccountEnabled, LeaveDate, DaysSinceLeave, GroupCount, LicenseCount, PackageCount -AutoSize
+        Format-Table Name, AccountEnabled, LeaveDateUtc, DaysSinceLeave, GroupCount, LicenseCount, PackageCount -AutoSize
 
     Write-Host "Detail:`n"
     foreach ($f in $stillEntitled) {
         Write-Host "  $($f.Name)  ($($f.UPN))" -ForegroundColor Yellow
         Write-Host "    account   : $(if ($f.AccountEnabled) { 'ENABLED' } else { 'disabled' })"
-        Write-Host "    left      : $($f.LeaveDate)  ($($f.DaysSinceLeave) days ago)"
+        Write-Host "    left      : $($f.LeaveDateUtc)   /   $($f.LeaveDateLocal)"
+        Write-Host "                $($f.DaysSinceLeave) days ago"
         Write-Host "    groups    : $(if ($f.Groups)         { $f.Groups }         else { 'none' })"
         Write-Host "    licenses  : $(if ($f.Licenses)       { $f.Licenses }       else { 'none' })"
         Write-Host "    packages  : $(if ($f.AccessPackages) { $f.AccessPackages } else { 'none' })"

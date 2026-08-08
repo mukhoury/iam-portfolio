@@ -129,18 +129,18 @@ lifecycle information like employeeLeaveDateTime of users in your organization."
 trusting its results. A null lifecycle attribute is not evidence of anything unless
 `User-LifeCycleInfo.Read.All` is confirmed present in the session.
 
-### Second finding: employeeLeaveDateTime silently discards the time component
+### Second finding: the workflow discards the time component, NOT the attribute
+> **CORRECTED 2026-08-08 in Phase 5.** The original version of this entry claimed the attribute
+> itself stores date-only precision. That was wrong. A Graph write preserves the time to the
+> minute. The workflow task is what truncates. The observation below was accurate, the cause
+> assigned to it was not. Corrected text follows, original reasoning kept so the mistake is
+> visible.
+
 The corrected leaver workflow ran at **7:00 AM on 8/6** and set this attribute to `system.now`.
 The stored value renders as **8/6/2026 12:00:00 AM**, midnight. The time was dropped despite
 the attribute being named `...DateTime`.
 
-This is the mechanism behind the Lab 2 observation that offboarding lag can never be measured.
-It is not only that the workflow stamps its own run time rather than the actual termination
-moment. Even a correctly stamped value could not express lag under 24 hours, because the field
-holds day-level precision. Any offboarding SLA measured in hours cannot be evidenced from this
-attribute.
-
-**Verified against the raw Graph REST response**, so this is storage, not SDK formatting:
+**Verified against the raw Graph REST response**, so this is not SDK formatting:
 
     GET https://graph.microsoft.com/v1.0/users/robert.nguyen@hids1.onmicrosoft.com
         ?$select=displayName,employeeLeaveDateTime
@@ -150,8 +150,23 @@ attribute.
       "displayName": "Robert Nguyen"
     }
 
-The workflow executed at 7:00 AM Pacific, which is 14:00 UTC. The directory stored
-`00:00:00Z`. Entra keeps the date and discards the time on write.
+The workflow executed at 7:00 AM Pacific, which is 14:00 UTC. The directory stored `00:00:00Z`.
+
+**What I concluded at the time, and got wrong:** that Entra keeps the date and discards the
+time on every write, so offboarding lag under 24 hours is unmeasurable by design.
+
+**What Phase 5 proved:** see "The truncation question, answered" below. Writing
+`2026-08-08 14:30:00` through Graph stored `21:30Z` and read back intact. The attribute holds
+full precision. **`Update user attributes` with `system.now` is what writes a date-only value.**
+
+The practical conclusion narrows rather than disappears: offboarding lag is unmeasurable when
+the timestamp is set by a Lifecycle Workflow, which is the only portal-native path. It is
+perfectly measurable when set by Graph. That is a sharper argument for scripting than the
+original claim, because it points at a specific broken component instead of a platform limit.
+
+**The lesson worth keeping:** one observation supported two explanations, and I picked the
+wrong one because I never tested the other write path. "Verified against raw REST" proved the
+stored value, not the cause. Proving what a value IS is not the same as proving WHY.
 
 ---
 
@@ -298,3 +313,98 @@ argument as the Lab 2 finding that eligible-but-not-active is the safe default.
 2. **`Find-TerminatedWithAccess.ps1` checks for missing scopes, not excess ones.** Under-permission
    produces a silently incomplete report, which the script already hard-stops on. Over-permission
    produces silent risk, which it does not notice at all. Worth adding a warning.
+
+---
+
+## Phase 5 - Bootstrapping the scheduled leaver
+
+Subject: **Thomas Brooks, Engineering.** Chosen deliberately. Every other candidate carries
+evidence from an earlier phase (Priya from entitlement management, Marcus from PIM, Sarah as
+approver, Robert from lifecycle), and Engineering is the one department untouched by any prior
+phase. Critically he is **not in Sales**, so the existing joiner workflow scoped to
+`department eq 'Sales'` cannot fire on him and confuse the result.
+
+### Tenant survey first, and it explains a lot of Lab 2
+Listed all 13 users with their lifecycle attributes before touching anything:
+
+**No user has an `employeeHireDate`. No user has an `employeeType`. Only Robert carries an
+`employeeLeaveDateTime`.** Robert's hire date is now blank, which confirms the corrected
+leaver's attribute-clearing task did what it claimed.
+
+That emptiness is the root cause behind several Lab 2 dead ends that looked unrelated at the
+time: manager-as-approver was unusable, group-owner-as-reviewer was unusable, and
+manager-as-reviewer fell through to the backup on every request. **Half of Entra's governance
+surface reads from attributes that nobody populates.** A governance feature is only as good as
+the directory data underneath it, and most tenants have less of that data than they think.
+
+### Just-in-time write access, proven
+`Connect-LabWrite` **triggered a fresh Microsoft consent prompt.** Before the Phase 4 revoke it
+would have connected silently against the standing grant. The session came back with 12 scopes
+including `User-LifeCycleInfo.ReadWrite.All` and `LifecycleWorkflows.ReadWrite.All`, neither of
+which had ever been consented on that application.
+
+That is the Phase 4 remediation paying off: a standing application privilege became a
+just-in-time one, granted by a human at the moment of need. Same argument as PIM, one layer
+down, applied to an application identity instead of a person.
+
+### THE TRUNCATION QUESTION, ANSWERED
+The open question carried from Lab 2 was whether `employeeLeaveDateTime` discards time on every
+write path, or only when a workflow task sets it with `system.now`.
+
+Wrote an explicit non-midnight time through Graph:
+
+    Update-MgUser -UserId thomas.brooks@hids1.onmicrosoft.com `
+                  -EmployeeLeaveDateTime (Get-Date "2026-08-08 14:30:00")
+
+Read straight back:
+
+    Thomas Brooks   8/8/2026 9:30:00 PM
+
+**The time survived.** 2:30 PM Pacific is 21:30 UTC, and 21:30 UTC is 9:30 PM. Stored to the
+minute.
+
+**Conclusion: the attribute holds full datetime precision. The Lifecycle Workflow task is the
+thing that truncates.** This corrects the Phase 2 entry above, which blamed the attribute.
+
+Why it matters: "the platform cannot measure offboarding lag" is a much weaker and less useful
+statement than "the workflow task writes a date-only value, so lag is unmeasurable only on the
+portal-native path." The first sounds like a limitation to accept. The second names a specific
+component to work around, and the workaround is the script.
+
+### Second finding: the SDK round-trips through UTC and prints UTC on read
+Wrote `14:30`, read back `9:30 PM`. Nothing is wrong, that is the same instant expressed in
+UTC, but the SDK does not convert back to local on read.
+
+An administrator who writes an afternoon timestamp and sees a seven-hour difference come back
+will reasonably assume the write was corrupted and go hunting a bug that does not exist. Any
+report built on these values needs an explicit timezone conversion, or an explicit statement
+that the column is UTC. A timestamp without a stated zone is not evidence.
+
+### Third finding: the revoke does not stay revoked
+Set `employeeType = Administrator` on the admin account, then ran `Disconnect-Lab; Connect-Lab`
+to drop back to least privilege.
+
+**It came back READ-WRITE with 12 scopes.**
+
+Granting write consent during `Connect-LabWrite` recreated the standing tenant-wide grant. The
+just-in-time property established by the Phase 4 revoke survived exactly until the first time
+write was actually used. From that moment `Connect-Lab` hands back write again, because the
+grant governs and the request does not.
+
+**Revoking once is not a remediation, it is a reset.** Genuine just-in-time application
+privilege requires one of:
+
+1. Revoking the write grant after every write session, which nobody will do reliably by hand
+   and which therefore needs to be scripted or scheduled.
+2. A dedicated app registration holding only read permissions, used for all audit work, so the
+   read tooling is structurally incapable of writing regardless of what the shared Graph CLI
+   app has been consented for.
+
+Option 2 is the real answer, and it is the same reasoning as using a separate break-glass
+account instead of promising to be careful with the one you have. **Controls that depend on an
+operator remembering to undo something are not controls.**
+
+Worth noting the shape of the mistake: the Phase 4 write-up called the revoke a fix and
+verified it against a single reconnect. That verification was real but it was taken before the
+one action guaranteed to undo it. **Verifying a control immediately after applying it only
+proves it applied, not that it holds.**
