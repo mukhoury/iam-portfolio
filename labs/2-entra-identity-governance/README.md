@@ -241,7 +241,7 @@ That circular dependency is the cleanest argument in this lab for why an IAM ana
 
 ## Artifacts
 
-235 screenshots covering the full build are in [`screenshots/`](screenshots/). The set below is the evidence for the findings above.
+232 screenshots covering the full build are in [`screenshots/`](screenshots/). The set below is the evidence for the findings above.
 
 ### Phase 1: Entitlement Management
 
