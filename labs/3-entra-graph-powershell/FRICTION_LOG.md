@@ -15,6 +15,9 @@ video narration sounds like someone who actually did the work, not someone readi
 Phases 1 through 4 are read-only. Write access is requested once, at Phase 5, and that
 sequencing is deliberate.
 
+That sequencing turned out to be unenforceable by itself. See the Phase 4 finding: asking for
+read-only scopes does not produce a read-only session.
+
 ---
 
 ## Phase 1 - Environment and auth
@@ -216,3 +219,82 @@ that never passed an approval gate.**
 ### Tenant is cloud only
 On-premises sync enabled reads No, which is why the hybrid limitation on `Update user
 attributes` is documented from Microsoft's constraints rather than tested here.
+
+---
+
+## Phase 4 - Tooling, and THE FINDING: a read-only request is not a read-only session
+
+### The PowerShell profile
+Built `~/.config/powershell/Microsoft.PowerShell_profile.ps1` so the workflow is `pwsh`,
+`Connect-Lab`, `Find-TerminatedWithAccess` instead of retyping a five-scope connect line and a
+full script path every time.
+
+It does four things: puts the lab scripts folder on `$env:PATH` (via `Join-Path $HOME ...`, not
+a hardcoded `/Users/derek`, so the same profile works on the MacBook where home is `muk`),
+defines `Connect-Lab` with read scopes, defines `Connect-LabWrite` with write scopes behind a
+typed confirmation, and defines `Show-LabContext` to print the account, tenant, and every
+granted scope with a READ-ONLY or READ-WRITE banner.
+
+The banner was meant to be a convenience. It turned into the control that caught the finding.
+
+### THE FINDING
+Ran `Connect-Lab`, which requests exactly six read scopes. The session came back:
+
+    Mode   : READ-WRITE
+    Scopes : 10 granted
+             ...
+             User.ReadWrite.All
+
+**`User.ReadWrite.All` was never requested.** Write access to every user object in the tenant,
+in a session explicitly asked to be read-only.
+
+### Root cause
+`Connect-MgGraph -Scopes` is a **request, not a limit**. Entra issues a token containing every
+delegated permission the application has already been consented for. Microsoft Graph Command
+Line Tools is a shared Microsoft first-party app, and it had a standing tenant-wide admin
+consent grant that included `User.ReadWrite.All` from an earlier write session.
+
+Confirmed in Entra admin center at Enterprise applications > Microsoft Graph Command Line Tools
+> Permissions > Admin consent: ten delegated permissions, every row reading
+`Granted through: Admin consent`, `Granted by: An administrator`. That grant is a durable
+directory object. It does not care what scopes you asked for today.
+Screenshot `01-graph-cli-admin-consent-includes-user-readwrite-all.png`.
+
+### Why it matters
+Every piece of guidance says to connect with least privilege and step up only when needed. That
+advice is unenforceable through the scope parameter alone. An admin who connects "read-only
+first" out of caution is holding tenant-wide user write for the entire session, and nothing in
+the default connect output tells them. The habit provides the feeling of least privilege without
+the fact of it.
+
+The `offline_access` row on the same blade is worth naming too: "maintain access to data you
+have given it access to" is the refresh token, which is exactly what Lab 2's
+`Revoke all refresh tokens for user` task destroys. The mechanism Lab 2 built a control against
+is visible here from the requesting side.
+
+### The fix, and it is the same principle as PIM
+Revoked the standing `User.ReadWrite.All` grant from the application. Permission count went
+10 to 9, all remaining entries read or sign-in scopes.
+Screenshot `02-after-revoke-nine-permissions-read-only.png`.
+
+Reconnected with `Disconnect-Lab; Connect-Lab`:
+
+    Mode   : READ-ONLY
+    Scopes : 9 granted
+
+Screenshot `03-connect-lab-before-and-after-revoke.png` holds both states in one frame, same
+command, same account, minutes apart.
+
+**This converts a standing application privilege into a just-in-time one.** Write consent is now
+granted at the moment Phase 5 needs it rather than sitting permanently on the service principal.
+That is PIM's argument applied to an application identity instead of a human one, and the same
+argument as the Lab 2 finding that eligible-but-not-active is the safe default.
+
+### Two things this exposed that are still open
+1. **Revocation timing was not measured.** The new token reflected the revoked grant immediately
+   after `Disconnect-Lab`, so the MSAL cache was cleared rather than reused. Whether an
+   already-issued token would have kept working until expiry was not tested. It almost certainly
+   would have, which means revoking consent does not revoke access already in flight.
+2. **`Find-TerminatedWithAccess.ps1` checks for missing scopes, not excess ones.** Under-permission
+   produces a silently incomplete report, which the script already hard-stops on. Over-permission
+   produces silent risk, which it does not notice at all. Worth adding a warning.
