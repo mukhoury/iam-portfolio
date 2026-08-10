@@ -36,18 +36,25 @@ both problems with two native Entra ID controls:
 ```mermaid
 flowchart LR
     subgraph Users["Identities (13 total)"]
-        u["12 department users<br/>(IT · Finance · HR · Sales ·<br/>Marketing · Engineering, 2 each)"]
-        admin["mukhtar@hids1<br/>(Global Admin / break-glass)"]
+        u["`12 department users
+        (IT · Finance · HR · Sales · Marketing · Engineering, 2 each)`"]
+        admin["`mukhtar@hids1
+        (Global Admin / break-glass)`"]
     end
 
     subgraph Groups["6 Dynamic Security Groups"]
-        rule["Rule per group:<br/>(user.department -eq '&lt;Dept&gt;')"]
-        g["IT · Finance · HR · Sales ·<br/>Marketing · Engineering"]
+        rule["`Rule per group:
+        (user.department -eq '&lt;Dept&gt;')`"]
+        g["`IT · Finance · HR
+        Sales · Marketing · Engineering`"]
     end
 
     subgraph CA["Conditional Access, CA001"]
-        policy["Require MFA for All Users<br/>Target: All resources<br/>Grant: Require MFA"]
-        exclude["admin account excluded<br/>(break-glass)"]
+        policy["`Require MFA for All Users
+        Target: All resources
+        Grant: Require MFA`"]
+        exclude["`admin account excluded
+        (break-glass)`"]
     end
 
     u -->|department attribute evaluated| rule
