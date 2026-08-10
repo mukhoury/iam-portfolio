@@ -5,7 +5,7 @@ Hands-on **Identity & Access Management (IAM)** lab work, documented as case stu
 I have 10+ years of real-world IAM experience (identity lifecycle management, RBAC
 design, and access governance across enterprise retail, consulting, and financial
 services). This repo is where I demonstrate that experience in modern, hands-on tooling,
-one reproducible lab at a time, each written up the way I'd talk through it in an interview.
+one reproducible lab at a time.
 
 **Certifications:** CompTIA Security+ · ISC2 Certified in Cybersecurity (CC)
 **Currently building toward:** Microsoft SC-300 (Identity & Access Administrator)
@@ -18,14 +18,13 @@ one reproducible lab at a time, each written up the way I'd talk through it in a
 |---|-----|-------|-------|
 | 1 | [Entra ID Dynamic Groups & Conditional Access](labs/1-entra-dynamic-groups-conditional-access/) | ABAC · dynamic groups · Zero Trust · Conditional Access | Microsoft Entra ID (Premium P2) |
 | 2 | [Entra ID Identity Governance](labs/2-entra-identity-governance/) | Access packages · access reviews · PIM · Lifecycle Workflows | Microsoft Entra ID (P2 + ID Governance) |
-| 3 | [Identity Automation with Microsoft Graph PowerShell](labs/3-entra-graph-powershell/) | Graph API · offboarding detection controls · scope-aware scripting | Microsoft Graph PowerShell SDK |
+| 3 | [Offboarding Detection & Consent Auditing with Microsoft Graph PowerShell](labs/3-entra-graph-powershell/) | Graph API · offboarding detection controls · OAuth consent · just-in-time app privilege | Microsoft Graph PowerShell SDK |
 
 **Short links:** [mukhoury.github.io/iam-portfolio/lab1](https://mukhoury.github.io/iam-portfolio/lab1/) ·
 [lab2](https://mukhoury.github.io/iam-portfolio/lab2/) ·
 [lab3](https://mukhoury.github.io/iam-portfolio/lab3/)
 
-*Labs 2 and 3 are being written up. Application Identity (app registrations, SSO/SAML/OIDC)
-is next.*
+*Application Identity (app registrations, SSO/SAML/OIDC) is next.*
 
 ---
 
