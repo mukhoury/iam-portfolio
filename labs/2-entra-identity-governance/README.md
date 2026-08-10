@@ -35,31 +35,41 @@ Four native Entra controls, one per gap, built and verified end to end as real u
 ```mermaid
 flowchart TB
     subgraph J["JOINER: scheduled, 5 days before hire date"]
-        j1["Generate Temporary Access Pass<br/>8 hr window · one-time use<br/>emailed to manager"]
-        j2["Grant New Hire Baseline Access<br/>(Assigned group)"]
+        j1["`Generate Temporary Access Pass
+            8 hr window · one-time use
+            emailed to manager`"]
+        j2["`Grant New Hire Baseline Access
+            (Assigned group)`"]
     end
 
     subgraph G["GRANT: Entitlement Management"]
-        g1["User requests package<br/>(scoped to Finance dynamic group)"]
-        g2["Approver decides<br/>+ recorded justification"]
-        g3["Governance engine provisions<br/>90-day expiration"]
+        g1["`User requests package
+            (scoped to Finance dynamic group)`"]
+        g2["`Approver decides
+            + recorded justification`"]
+        g3["`Governance engine provisions
+            90-day expiration`"]
     end
 
     subgraph C["CERTIFY: Access Reviews"]
-        c1["Quarterly recurrence<br/>7-day window"]
-        c2["Fail closed:<br/>no response = remove access"]
+        c1["`Quarterly recurrence
+            7-day window`"]
+        c2["`Fail closed:
+            no response = remove access`"]
     end
 
     subgraph P["PRIVILEGE: PIM"]
         p1["Eligible, not active"]
-        p2["Activate: MFA + justification<br/>+ approval by a second person"]
+        p2["`Activate: MFA + justification
+            + approval by a second person`"]
         p3["Auto-expires at 4 hrs"]
     end
 
     subgraph L["LEAVER: on demand"]
         l1["1. Disable account"]
         l2["2. Revoke all refresh tokens"]
-        l3["3. Clear lifecycle attributes<br/>(department, hire date)"]
+        l3["`3. Clear lifecycle attributes
+            (department, hire date)`"]
         l4["4. Remove groups, Teams, licenses"]
     end
 
