@@ -43,8 +43,8 @@ flowchart LR
     end
 
     subgraph Groups["6 Dynamic Security Groups"]
-        rule["`Rule per group:
-        (user.department -eq '&lt;Dept&gt;')`"]
+        rule["`Rule per group, e.g. Sales:
+        user.department -eq 'Sales'`"]
         g["`IT · Finance · HR
         Sales · Marketing · Engineering`"]
     end
