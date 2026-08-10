@@ -29,7 +29,7 @@
 
 .NOTES
     Author : Mukhtar Houry
-    Lab    : Entra Lab 3 - Identity Automation with Microsoft Graph PowerShell
+    Lab    : Entra Lab 3 - Offboarding Detection and Consent Auditing with Microsoft Graph PowerShell
 
     REQUIRED PERMISSIONS
         User.Read.All                   user objects

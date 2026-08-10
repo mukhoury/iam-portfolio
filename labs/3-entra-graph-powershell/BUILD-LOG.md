@@ -1,16 +1,21 @@
-# Lab 3 Friction Log - Identity Automation with Microsoft Graph PowerShell
+# Lab 3: Offboarding Detection and Consent Auditing with Microsoft Graph PowerShell — Build Log
 
-Running log of every mistake, surprise, and dead end. Written down as it happens so the
-video narration sounds like someone who actually did the work, not someone reading a script.
+**Tenant:** Houry Identity Solutions (`hids1.onmicrosoft.com`) · Entra ID Premium P2 + ID Governance
+**Operator:** Mukhtar Houry (Global Administrator)
+**Build date:** 2026-08-07 to 2026-08-08
+**SC-300 coverage:** Domain 1 (identities and authentication) and Domain 4 (identity governance)
+
+Working record of what was built, in the order it was built, with the reasoning behind
+each choice.
 
 ## Phase checklist
 
 - [x] Phase 1 - Environment and auth
 - [x] Phase 2 - Read what the portal hides
 - [x] Phase 3 - Collision detector
-- [ ] Phase 4 - True lifecycle metrics
-- [ ] Phase 5 - Bootstrap the scheduled leaver (only phase needing write scopes)
-- [ ] Phase 6 - Write-up
+- [x] Phase 4 - True lifecycle metrics
+- [x] Phase 5 - Bootstrap the scheduled leaver (only phase needing write scopes)
+- [x] Phase 6 - Write-up ([`README.md`](README.md))
 
 Phases 1 through 4 are read-only. Write access is requested once, at Phase 5, and that
 sequencing is deliberate.
