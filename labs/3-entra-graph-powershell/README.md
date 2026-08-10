@@ -40,16 +40,16 @@ sequenceDiagram
     participant Op as Operator
     participant SDK as Graph PowerShell SDK
     participant Entra as Microsoft Entra ID
-    participant SP as Service principal<br/>(Graph Command Line Tools)
+    participant SP as Service principal (Graph Command Line Tools)
 
     Op->>SDK: Connect-MgGraph -Scopes (6 read scopes)
     SDK->>Entra: authorize, requesting 6 scopes
     Entra->>SP: what has this app already been consented for?
-    SP-->>Entra: 10 delegated permissions<br/>(standing admin consent)
-    Note over Entra,SP: The standing grant governs.<br/>The request does not.
-    Entra-->>SDK: token carrying all 10<br/>including User.ReadWrite.All
+    SP-->>Entra: 10 delegated permissions (standing admin consent)
+    Note over Entra,SP: The standing grant governs. The request does not.
+    Entra-->>SDK: token carrying all 10 including User.ReadWrite.All
     SDK-->>Op: connected
-    Note over Op: Believes the session is read-only.<br/>Holds tenant-wide user write.
+    Note over Op: Believes the session is read-only. Holds tenant-wide user write.
 ```
 
 The `-Scopes` parameter is a **request**, not a limit. Nothing in the default connect output reveals the difference.
