@@ -5,9 +5,8 @@
 **Build date:** 2026-07-27
 **SC-300 coverage:** Domain 4, Plan and implement identity governance
 
-This is the working record of what was built, in the order it was built, with the
-reasoning behind each choice. It exists so the lab can be (a) rebuilt from scratch,
-(b) narrated on video without guessing, and (c) defended in an interview.
+Working record of what was built, in the order it was built, with the reasoning behind
+each choice.
 
 ---
 
@@ -135,24 +134,12 @@ Tested as a real end user, not by admin assignment.
 
 - Screenshots: `13`-`24`
 
-### Phase 1 narration hooks (for the video)
-
-- "The group was empty at 3:11. I never added anyone to it. The approval did that."
-- "She sees one package. An IT user sees none. That's her department attribute deciding
-  what she's even allowed to ask for."
-- "Fourteen days is Entra's ceiling on an approval decision, you can go lower, not higher."
-- "Ninety days, no self-extension. This access removes itself."
-- "The requestor states the need. The approver states the decision rationale. Six months
-  from now, an auditor asks why she has this, and the answer is a record, not a memory."
-
 ---
 
----
+## What went wrong in phase 1
 
-## Friction log: what actually went wrong (keep this; it's the honest part)
-
-Everything below cost real time during the build. This is the section that makes the
-video worth watching, because it's what a viewer will hit too.
+Everything below cost real time during the build. Each one is a platform behavior the
+documentation does not warn you about.
 
 1. **Dynamic groups can't go in an access package.** Built six beautiful dynamic groups in
    Lab 1, went to add one as the package resource, and none of them work. Entra owns
@@ -214,7 +201,7 @@ recurring review is the control that catches it.
 - **Status after create:** Not started (Entra activates the first instance on its own
   schedule from the start date)
 
-### Design decisions worth defending in an interview
+### Design decisions
 
 - **Fail closed.** Setting no-response to "Remove access" with auto-apply enabled makes
   silence revoke access instead of preserving it. Entra shows an explicit amber warning
@@ -227,19 +214,11 @@ recurring review is the control that catches it.
   review drift into the next quarter.
 - **Named reviewer, not group owner or manager.** In a production tenant the right answer
   is group owners or managers, closest to the resource, or actually knows the person's
-  job. Both were unusable here (see friction #11).
-
-### Phase 2 narration hooks
-
-- "Silence removes access. That's deliberate, the most common way review programs fail
-  is reviewers ignoring the email."
-- "Microsoft warns you when you configure it this way. The warning is the feature."
-- "Two of the four reviewer options were dead in my tenant, and that's the real lesson:
-  governance features are only as good as the directory data underneath them."
+  job. Both were unusable here (see phase 2 issue #11).
 
 ---
 
-## Friction log: phase 2
+## What went wrong in phase 2
 
 9. **New template picker.** The wizard now opens with a Resource review / Catalog review
    card chooser. Older walkthroughs and Microsoft Learn screenshots drop straight into
@@ -280,7 +259,7 @@ Reviewer view showed: due **2026-08-03** (7 days from start), progress "In progr
 > 7/27/26 and was provisioned to this group via an approved access package request the
 > same day. Role (Financial Analyst) requires continued access to Finance Reporting App.
 
-### Friction log: phase 2 (continued)
+### What went wrong in phase 2 (continued)
 
 13. **The decision helper produced a false positive.** Entra recommended **Deny** and
     tagged Priya as an **"Inactive user", "has not signed into this tenant in last 30
@@ -296,15 +275,6 @@ Reviewer view showed: due **2026-08-03** (7 days from start), progress "In progr
     review programs fail in production, reviewers rubber-stamp the machine because it's
     faster than thinking. Rejecting the recommendation and documenting *why* is the
     entire job.
-
-### Phase 2 narration hooks (continued)
-
-- "Entra told me to deny a user who had signed in the day before. I know why, the
-  sign-in data hadn't propagated yet, and that's the whole argument against the
-  'Accept recommendations' button."
-- "The reviewer never sees the admin center. Different portal, different person,
-  different mental model. If you build a review your reviewers can't understand in
-  thirty seconds, they'll click whatever the machine suggests."
 
 ### Closing the loop: decision → enforcement (2026-07-28)
 
@@ -333,7 +303,7 @@ rewriting it to the early-stop date.
 current *instance*, not the *series*. The series stays Active and spawns the next quarterly
 instance on schedule.
 
-### Friction log: phase 2 (continued)
+### What went wrong in phase 2 (continued)
 
 14. **The entire "Current" nav group greys out between instances.** After stopping the
     instance, Results / Reviewers / Settings / Audit logs under **Current** all go
@@ -431,7 +401,7 @@ Notification settings left at defaults, three streams (assigned-eligible,
 assigned-active, activated) each notifying Admin, Assignee/Requestor and Approver.
 Detection layered on prevention.
 
-### Design decisions worth defending in an interview
+### Design decisions
 
 - **Approval routed to a named individual, not a group.** The member picker offers groups,
   and best practice *is* a group so one person's vacation doesn't block every activation,
@@ -451,7 +421,7 @@ Detection layered on prevention.
   phishing-resistant MFA, instead of plain MFA. Stronger, and it would chain into CA001
   from Lab 1. Left out so the demo stays legible; named as the ceiling.
 
-### Friction log: phase 3
+### What went wrong in phase 3
 
 16. **Naming drift in the portal.** The UI still says **"Azure MFA"** and **"Azure
     Multi-Factor Authentication"** although the product is now Microsoft Entra multifactor
@@ -505,9 +475,10 @@ center generates a random temporary password that cannot be chosen, which would 
 "all lab accounts on one shared password" convention. Trying the live password first,
 resetting only on failure.
 
-### Callout targets for video editing (Kite)
+### The five values that carry the whole lab
 
-Rows that are invisible in a wall of table text and need an on-screen highlight:
+Each of these is a single row buried in a wall of table text, and each one is the entire
+argument of the phase it belongs to:
 
 - `Require approval to activate: No` and `Allow permanent active assignment: Yes` on the
   role-settings defaults screen, the whole argument of Phase 3
@@ -757,7 +728,7 @@ Changed to **1 month / pay monthly / quantity 1** → $4.80 on Sep 2, month-to-m
   Aug 9) and Aug 29 (kill Governance).
 - After: `ID Governance: 25`, Entra home lists **Standalone products: Entra ID
   Governance**, and Lifecycle workflows loads. `92` `93` `94`
-- **Before/after pair for the video: `79` → `93`.** Zero to 25, one number.
+- **The whole license change is legible in one number:** `79` → `93`, zero to 25.
 
 ### Tenant defaults noted on arrival
 
@@ -942,7 +913,7 @@ stolen pass is burned on first redemption, so the theft becomes detectable rathe
 **And read the footer:** *"Microsoft Corporation facilitated sending this email but did not
 validate the sender or the message."* An email containing a credential, from a noreply
 address, carrying a disclaimer that nobody verified it, **structurally indistinguishable
-from a phishing email**, and new hires are trained to trust it on day one. Kite callout.
+from a phishing email**, and new hires are trained to trust it on day one.
 
 **Group membership confirmed** `185`: `1 group member found`, Robert Nguyen, Object Id
 `0a05ef8d-7bec-47a4-8b0d-6bf4f6748678`, **matching the User ID in the workflow history
@@ -1014,7 +985,7 @@ control, and it is the step that gets forgotten for months).
 4. **Remove user from all Teams**
 5. **Remove all licenses for user:** reclaim cost
 
-**The sequencing logic, stated for the video script:** kill the ability to authenticate
+**The sequencing logic:** kill the ability to authenticate
 first, then invalidate what is already authenticated, then remove what they could reach,
 then reclaim spend. Running the template's original order means stripping group memberships
 from someone who can still sign in, cleanup performed on a live session. **And no deletion
@@ -1097,4 +1068,6 @@ Both workflows built, hardened, run, and verified. Robert Nguyen was onboarded a
 and offboarded at 4:41 PM, **a full employee lifecycle in forty-one minutes**, with the
 evidence chain captured at every step.
 
-## Phase 5: Case study write-up + video ⬜
+## Phase 5: Case study write-up ✅
+
+Published as [`README.md`](README.md).
