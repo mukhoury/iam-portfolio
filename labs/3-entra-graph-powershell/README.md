@@ -1,4 +1,4 @@
-# Lab 3: Offboarding Detection and Consent Auditing with Microsoft Graph PowerShell
+# Lab 3: Off-boarding Detection and Consent Auditing with PowerShell
 
 **Tools:** Microsoft Graph PowerShell SDK 2.39.0 · PowerShell 7.6.4 · Microsoft Graph REST API · Microsoft Entra ID Premium P2 · Microsoft Entra ID Governance
 

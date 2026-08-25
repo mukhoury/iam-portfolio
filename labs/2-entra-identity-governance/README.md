@@ -1,4 +1,4 @@
-# Lab 2: Microsoft Entra ID Identity Governance
+# Lab 2: Identity Governance and Lifecycle Automation
 
 **Tools:** Microsoft Entra ID Premium P2 · Microsoft Entra ID Governance · Entitlement Management · Access Reviews · Privileged Identity Management (PIM) · Lifecycle Workflows
 

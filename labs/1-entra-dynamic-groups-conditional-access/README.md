@@ -1,4 +1,4 @@
-# Lab 1: Microsoft Entra ID Dynamic Groups & Conditional Access
+# Lab 1: Entra ID Dynamic Groups and Conditional Access
 
 **Tools:** Microsoft Entra ID (Azure AD) · Entra ID Premium P2 · Conditional Access · Microsoft Graph-backed user provisioning
 

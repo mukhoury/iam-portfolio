@@ -16,15 +16,15 @@ one reproducible lab at a time.
 
 | # | Lab | Focus | Tools |
 |---|-----|-------|-------|
-| 1 | [Entra ID Dynamic Groups & Conditional Access](labs/1-entra-dynamic-groups-conditional-access/) | ABAC · dynamic groups · Zero Trust · Conditional Access | Microsoft Entra ID (Premium P2) |
-| 2 | [Entra ID Identity Governance](labs/2-entra-identity-governance/) | Access packages · access reviews · PIM · Lifecycle Workflows | Microsoft Entra ID (P2 + ID Governance) |
-| 3 | [Offboarding Detection & Consent Auditing with Microsoft Graph PowerShell](labs/3-entra-graph-powershell/) | Graph API · offboarding detection controls · OAuth consent · just-in-time app privilege | Microsoft Graph PowerShell SDK |
+| 1 | [Entra ID Dynamic Groups and Conditional Access](labs/1-entra-dynamic-groups-conditional-access/) | ABAC · dynamic groups · Zero Trust · Conditional Access | Microsoft Entra ID (Premium P2) |
+| 2 | [Identity Governance and Lifecycle Automation](labs/2-entra-identity-governance/) | Access packages · access reviews · PIM · Lifecycle Workflows | Microsoft Entra ID (P2 + ID Governance) |
+| 3 | [Off-boarding Detection and Consent Auditing with PowerShell](labs/3-entra-graph-powershell/) | Graph API · off-boarding detection controls · OAuth consent · just-in-time app privilege | Microsoft Graph PowerShell SDK |
+| 4 | [Hybrid Identity and Directory Synchronization](labs/4-entra-hybrid-identity/) | Source of authority · sync scope as a security control · attribute-driven access · detection gaps | Active Directory Domain Services + Microsoft Entra Connect Sync |
 
 **Short links:** [mukhoury.github.io/iam-portfolio/lab1](https://mukhoury.github.io/iam-portfolio/lab1/) ·
 [lab2](https://mukhoury.github.io/iam-portfolio/lab2/) ·
-[lab3](https://mukhoury.github.io/iam-portfolio/lab3/)
-
-*Application Identity (app registrations, SSO/SAML/OIDC) is next.*
+[lab3](https://mukhoury.github.io/iam-portfolio/lab3/) ·
+[lab4](https://mukhoury.github.io/iam-portfolio/lab4/)
 
 ---
 
