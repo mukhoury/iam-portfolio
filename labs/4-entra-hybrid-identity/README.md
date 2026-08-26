@@ -50,6 +50,13 @@ Nobody would move a terminated account into an out-of-scope container without kn
 
 I'd also want the excluded service accounts covered by something. Keeping them out of the cloud is defensible, but it means they're outside Conditional Access, access reviews, and risk detection, and that trade needs a compensating control on-premises rather than being an accident of a filter.
 
+## Change records
+
+Two of the tests above written up the way an identity team would hand them to an auditor: subject, baseline, what changed, approval trail, and a control verification table with pass and fail results.
+
+- [`LAB4-CHG-001`](evidence/LAB4-CHG-001-mover-amanda-foster.md) — a role change that replaced every entitlement a user had, with no request and no approver. 4 controls pass, 3 fail.
+- [`LAB4-CHG-002`](evidence/LAB4-CHG-002-leaver-victor-ramos.md) — a termination run the way a help desk runs one. 4 controls pass, 7 fail.
+
 ## Screenshots
 
 | | |
