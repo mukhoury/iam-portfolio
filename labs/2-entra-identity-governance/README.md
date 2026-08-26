@@ -44,6 +44,15 @@ I'd alert on group membership events, the adds and removes individually, rather 
 
 I'd also want the joiner and leaver workflows to know about each other. The failure here wasn't that either one broke. It was that a scheduled joiner ran against a terminated account eight hours later and nothing existed to stop it.
 
+## Access review
+
+A quarterly access review across all 24 accounts in the tenant, run from Microsoft Graph rather than clicked through the portal.
+
+- [`access-review-2026-Q3.md`](evidence/access-review-2026-Q3.md) — findings and recommended actions
+- [`access-review-2026-Q3.xlsx`](evidence/access-review-2026-Q3.xlsx) — the workbook: overview, per-user review, findings, remediation tracker
+
+**24 reviewed, 14 retained, 8 actions required, 2 revalidations.** The two highest-risk findings are people with *no* access rather than too much: four users matched no group because Active Directory writes "Human Resources" where the rule expects "HR".
+
 ## Change record
 
 The termination above written up the way an identity team would hand it to an auditor: subject, baseline, what each run actually did, and a control verification table.
