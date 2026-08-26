@@ -1,4 +1,4 @@
-# Lab 3: Off-boarding Detection and Consent Auditing with PowerShell
+# Off-boarding Detection and Consent Auditing with PowerShell
 
 **Built with:** Microsoft Graph PowerShell SDK · Microsoft Graph API · PowerShell 7
 

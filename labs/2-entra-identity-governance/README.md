@@ -1,4 +1,4 @@
-# Lab 2: Identity Governance and Lifecycle Automation
+# Identity Governance and Lifecycle Automation
 
 **Built with:** Microsoft Entra ID (P2 + Entra ID Governance)
 

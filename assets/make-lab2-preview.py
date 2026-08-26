@@ -1,40 +1,40 @@
 """
-Featured-card thumbnail for Lab 2, the lead project.
+Featured-card thumbnail for Lab 2.
 
-Same constraint as make-social-preview.py: LinkedIn crops the Featured link
-thumbnail to roughly the centre 455px of a 1280px image, so everything lives
-inside a 420px safe band and stacks vertically to use the full 640px height.
+LinkedIn renders a Featured link thumbnail in a PORTRAIT box, measured at
+roughly 350x545 (ratio ~0.64). A 1280x640 landscape source gets scaled to fill
+that height and then cropped to about a third of its width, which slices text
+mid-word no matter how narrow the safe band is.
 
-The hook is the number. A recruiter scrolling should read "6 of 6 tasks
-complete, 0 failures, the user kept their access" before they read anything else.
+So this one is built portrait at 800x1245 to match the box. Nothing is cropped,
+which means the full width is usable and the type can breathe.
 """
 from PIL import Image, ImageDraw, ImageFont
 import sys
 
-W, H = 1280, 640
+W, H = 800, 1245
 S = 3
 w, h = W * S, H * S
-SAFE_W = 420
+PAD = 70
+CONTENT = W - PAD * 2
 OUT = sys.argv[1] if len(sys.argv) > 1 else "/tmp/lab2-preview.png"
 
 BOLD = "/System/Library/Fonts/Supplemental/Arial Bold.ttf"
 REG  = "/System/Library/Fonts/Supplemental/Arial.ttf"
 
 BLUE, WHITE = (63, 158, 255), (255, 255, 255)
-AMBER = (255, 176, 62)
 SUB, MID, DIM, RULE = (198, 211, 230), (150, 168, 194), (124, 142, 168), (48, 60, 82)
 
 img = Image.new("RGB", (w, h), (12, 17, 32))
 d = ImageDraw.Draw(img)
-top, bot = (11, 15, 29), (19, 26, 44)
+top, bot = (10, 14, 28), (21, 28, 48)
 for y in range(h):
     t = y / (h - 1)
     d.line([(0, y), (w, y)], fill=tuple(int(top[i] + (bot[i] - top[i]) * t) for i in range(3)))
 
-pw = (SAFE_W + 46) * S
-d.rectangle([w/2 - pw/2, 0, w/2 + pw/2, h], fill=(17, 23, 40))
-for px in (w/2 - pw/2, w/2 + pw/2):
-    d.line([(px, 0), (px, h)], fill=(34, 44, 66), width=max(1, int(1.2*S)))
+# thin keyline just inside the edge
+m = 22 * S
+d.rectangle([m, m, w - m, h - m], outline=(38, 49, 72), width=max(1, int(1.2 * S)))
 
 def font(p, sz): return ImageFont.truetype(p, int(sz * S))
 def width_of(s, f, tr=0):
@@ -54,35 +54,41 @@ def center(s, f, y, fill, tr=0):
             d.text((x, yy), c, font=f, fill=fill); x += d.textlength(c, font=f) + tr*S
     else:
         d.text((x, yy), s, font=f, fill=fill)
-def rule(y, frac=0.80):
-    rw = SAFE_W * frac * S
+def rule(y, frac=0.72):
+    rw = CONTENT * frac * S
     d.line([(w/2 - rw/2, y*S), (w/2 + rw/2, y*S)], fill=RULE, width=max(1, int(1.4*S)))
 
 # ---------- content ----------
-center("IAM PORTFOLIO  ·  LAB 2", fit("IAM PORTFOLIO  ·  LAB 2", BOLD, 22, SAFE_W, tr=3), 40, BLUE, tr=3)
+center("IAM PORTFOLIO", fit("IAM PORTFOLIO", BOLD, 26, CONTENT, tr=5), 140, BLUE, tr=5)
 
-center("Identity Governance",      fit("Identity Governance", BOLD, 46, SAFE_W), 80, WHITE)
-center("and Lifecycle Automation", fit("and Lifecycle Automation", BOLD, 46, SAFE_W), 132, WHITE)
+f_title = fit("and Lifecycle Automation", BOLD, 58, CONTENT)
+center("Identity Governance",      f_title, 215, WHITE)
+center("and Lifecycle Automation", f_title, 292, WHITE)
 
-rule(200)
+rule(415)
 
-center("6 of 6 tasks complete.", fit("6 of 6 tasks complete.", BOLD, 32, SAFE_W), 224, WHITE)
-center("0 failures.",            fit("0 failures.", BOLD, 32, SAFE_W), 268, WHITE)
-center("The user kept their access.", fit("The user kept their access.", REG, 26, SAFE_W), 320, AMBER)
+desc = [
+    "What happens to someone's access",
+    "when they join, change roles,",
+    "and leave.",
+]
+f_desc = fit(max(desc, key=len), REG, 32, CONTENT)
+for i, line in enumerate(desc):
+    center(line, f_desc, 470 + i*52, SUB)
 
-rule(378)
+rule(672)
 
-center("Mukhtar Houry", fit("Mukhtar Houry", BOLD, 38, SAFE_W), 400, WHITE)
-center("CompTIA Security+  ·  ISC2 CC", fit("CompTIA Security+  ·  ISC2 CC", REG, 24, SAFE_W), 452, MID)
+center("Mukhtar Houry", fit("Mukhtar Houry", BOLD, 50, CONTENT), 730, WHITE)
+center("CompTIA Security+  ·  ISC2 CC", fit("CompTIA Security+  ·  ISC2 CC", REG, 29, CONTENT), 818, MID)
 
-rule(506)
+rule(898)
 
-f = fit("Microsoft Entra ID  ·  Lifecycle Workflows", REG, 22, SAFE_W)
-center("Microsoft Entra ID  ·  Lifecycle Workflows", f, 528, DIM)
-center("Access Reviews  ·  PIM  ·  Entitlement Mgmt", f, 562, DIM)
+f = fit("Access Reviews  ·  PIM  ·  Entitlement Management", REG, 26, CONTENT)
+center("Microsoft Entra ID  ·  Lifecycle Workflows", f, 952, DIM)
+center("Access Reviews  ·  PIM  ·  Entitlement Management", f, 1000, DIM)
 
 URL = "mukhoury.github.io/iam-portfolio/lab2"
-center(URL, fit(URL, REG, 21, SAFE_W), 602, MID)
+center(URL, fit(URL, REG, 26, CONTENT), 1105, MID)
 
 img.resize((W, H), Image.LANCZOS).save(OUT, "PNG", optimize=True)
-print("wrote", OUT)
+print("wrote", OUT, f"{W}x{H}")

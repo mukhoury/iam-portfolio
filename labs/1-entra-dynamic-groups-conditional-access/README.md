@@ -1,4 +1,4 @@
-# Lab 1: Entra ID Dynamic Groups and Conditional Access
+# Entra ID Dynamic Groups and Conditional Access
 
 **Built with:** Microsoft Entra ID (Premium P2)
 

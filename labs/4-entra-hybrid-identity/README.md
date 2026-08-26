@@ -1,4 +1,4 @@
-# Lab 4: Hybrid Identity and Directory Synchronization
+# Hybrid Identity and Directory Synchronization
 
 **Built with:** Windows Server 2025 · Active Directory Domain Services · Microsoft Entra Connect Sync · Microsoft Entra ID P2 · PowerShell
 
