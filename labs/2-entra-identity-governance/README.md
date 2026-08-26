@@ -44,6 +44,12 @@ I'd alert on group membership events, the adds and removes individually, rather 
 
 I'd also want the joiner and leaver workflows to know about each other. The failure here wasn't that either one broke. It was that a scheduled joiner ran against a terminated account eight hours later and nothing existed to stop it.
 
+## Change record
+
+The termination above written up the way an identity team would hand it to an auditor: subject, baseline, what each run actually did, and a control verification table.
+
+- [`LAB2-CHG-001`](evidence/LAB2-CHG-001-leaver-robert-nguyen.md) — a termination that reported six of six tasks complete while leaving access in place, then had that access restored by a scheduled joiner 8.5 hours later. 4 controls pass, 7 fail.
+
 ## Screenshots
 
 | | |

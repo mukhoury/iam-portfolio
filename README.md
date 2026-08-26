@@ -12,6 +12,12 @@ one reproducible lab at a time.
 
 ---
 
+## Start here
+
+**[Identity Governance and Lifecycle Automation](labs/2-entra-identity-governance/)** is the one to read first. A termination reported six of six tasks complete and zero failures while the user kept a group. Eight and a half hours later a scheduled onboarding workflow gave the access back, and also reported zero failures.
+
+Two minutes, and it covers the problem every organization has: what is supposed to happen when somebody joins, changes roles, or leaves.
+
 ## Labs
 
 | # | Lab | Focus | Tools |
