@@ -6,8 +6,6 @@
 
 **Tenant:** `Houry Identity Solutions` (`hids1.onmicrosoft.com`), 13 users, 6 departments.
 
-> **Full build record:** [`BUILD-LOG.md`](BUILD-LOG.md) is the working log for this lab, written during the build rather than reconstructed afterward. It carries the full reasoning behind each finding below, including the wrong first diagnoses that were tested and eliminated along the way. This README is the summary.
-
 ---
 
 ## Problem
@@ -244,7 +242,7 @@ The only feedback is a summary count that is silently wrong until it isn't, with
 
 ## Artifacts
 
-The detection script is [`scripts/Find-TerminatedWithAccess.ps1`](scripts/Find-TerminatedWithAccess.ps1). The full working record, including the reasoning that eliminated the wrong explanations, is [`BUILD-LOG.md`](BUILD-LOG.md).
+The detection script is [`scripts/Find-TerminatedWithAccess.ps1`](scripts/Find-TerminatedWithAccess.ps1).
 
 | Screenshot | What it shows |
 |---|---|

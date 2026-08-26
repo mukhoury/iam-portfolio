@@ -6,8 +6,6 @@
 
 **Tenant:** `Houry Identity Solutions` (`hids1.onmicrosoft.com`), 13 users, 6 departments. Built on top of [Lab 1](../1-entra-dynamic-groups-conditional-access/).
 
-> **Full build record:** [`BUILD-LOG.md`](BUILD-LOG.md) is the working log for this lab, written as it was built. It contains every configuration value, every design decision, and an unedited friction log of what went wrong. This README is the summary.
-
 ---
 
 ## Problem

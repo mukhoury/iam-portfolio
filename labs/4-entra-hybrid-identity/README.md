@@ -6,8 +6,6 @@
 
 **Environment:** On-premises forest `hids.local` on a domain controller hosted in Azure, synchronized into `Houry Identity Solutions` (`hids1.onmicrosoft.com`). 15 accounts on-premises across three containers, 13 of them inside the synchronization scope.
 
-> **Full build record:** [`BUILD-LOG.md`](BUILD-LOG.md) is the working log for this lab, written during the build rather than reconstructed afterward. It carries every wrong prediction that was made and then disproved, with the evidence that killed it. This README is the summary.
-
 ---
 
 ## Problem
@@ -257,7 +255,5 @@ That threshold exists because organizational unit filtering makes mass deletion 
 Full capture set, including the phases not shown here, is in [`screenshots/`](screenshots/).
 ## Artifacts
 
-- [`BUILD-LOG.md`](BUILD-LOG.md) — the full working log, written during the build, including every wrong prediction and the evidence that disproved it
-- [`RUNBOOK.md`](RUNBOOK.md) — the build sequence in operational order
 - [`scripts/`](scripts/) — directory seeding and supporting automation
 - [`screenshots/`](screenshots/) — captured evidence for each finding
