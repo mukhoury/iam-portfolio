@@ -6,9 +6,17 @@ Lab 2 ended with a problem I couldn't answer from the portal. A termination repo
 
 The portal shows you one user at a time. Answering an auditor takes a query.
 
+## The risk
+
+An off-boarding failure that nobody detects is indistinguishable from an off-boarding that worked. Both look like a closed ticket.
+
+The second risk showed up while I was building the detection: if the person running the check has more permission than they think, or less, the report is wrong in a way that looks fine either way. Too much permission is an exposure. Too little produces a clean-looking report that's actually empty.
+
 ## What I built
 
 A PowerShell script that checks every terminated identity against the three places access actually lives: group memberships, licenses, and access package assignments. It exports to CSV so the output can go to an auditor as evidence.
+
+All users in this lab are fictional and the tenant was built for this project. Nothing here is production data.
 
 ## What I found
 
@@ -21,6 +29,20 @@ A PowerShell script that checks every terminated identity against the three plac
 **A missing permission looks exactly like a clean result.** Graph returns the termination date as empty when you lack the scope to read it, not as access denied. A report built on that would show zero terminated users and look perfect. I made the script hard-stop instead of producing a report it isn't allowed to produce correctly.
 
 **I corrected something I'd already published.** I had concluded the platform truncates a timestamp. Testing a second write path proved the platform keeps the full value and one workflow task was doing the truncating. Narrower, more useful, and I left the original reasoning visible rather than quietly editing it.
+
+## What I'd recommend
+
+Check entitlements, not account state. "Terminated but still enabled" misses the exact failure it's meant to catch.
+
+Audit what your tooling actually holds rather than what it requested. A standing admin consent grant on a shared application quietly governs every session anyone opens with it, and revoking it converts permanent write access into consent requested at the moment of need.
+
+Any script that produces audit evidence should assert its own permissions and refuse to run rather than emit an incomplete report.
+
+## What I'd do differently in a real environment
+
+This would run on a schedule against a service principal with certificate authentication, not interactively from a laptop, and the output would go somewhere with retention rather than a local CSV.
+
+I'd also reconcile against the HR system rather than the directory's own leave date, since the directory only knows what somebody remembered to write into it.
 
 ## Screenshots
 

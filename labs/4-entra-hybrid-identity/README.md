@@ -6,6 +6,12 @@ My first three labs were cloud-only. Every user was created in Entra ID, so Entr
 
 I wanted to build that setup myself and then break it on purpose to see what the cloud can and can't tell you.
 
+## The risk
+
+Two directories and one person. Every place they exist twice is a place something can be missed, and the gap between the two is where access survives a termination.
+
+The specific risk I wanted to test is that the on-premises side is edited by people who never sign into the cloud, and the cloud side is where access actually gets granted. A change made by someone in one system produces effects in another system they can't see.
+
 ## What I built
 
 An Active Directory forest on a Windows Server domain controller, synced into my Entra ID tenant with Entra Connect Sync.
@@ -15,6 +21,8 @@ I used a `.local` domain name on purpose, because that's what a lot of real comp
 I scoped the sync to one organizational unit and deliberately left two service accounts outside it, so there would be something real to go looking for later.
 
 Fifteen accounts on-premises. Thirteen made it to the cloud.
+
+All users in this lab are fictional and the tenant was built for this project. Nothing here is production data.
 
 ## What I found
 
@@ -28,11 +36,19 @@ Fifteen accounts on-premises. Thirteen made it to the cloud.
 
 **Two Microsoft consoles gave me opposite answers.** The Entra Connect page said sync status Enabled with no warning while my domain controller had been powered off overnight. Connect Health said Error on the same server after it came back and was syncing fine. Neither one was reporting on what it looked like it was reporting on.
 
-## Where I'd go next
+## What I'd recommend
 
-The fix for the disable problem is to clear the attributes that drive group membership, not just the sign-in flag. That's the same conclusion I reached in Lab 2 from a completely different direction, which is probably the actual lesson.
+Off-boarding has to clear the attributes that drive group membership, not just disable the account. Same conclusion I reached in Lab 2 from a completely different direction, which is probably the real lesson.
 
-For the sync gap, the only thing that works is comparing both directories on a schedule and alerting on the difference, because no single console can see both sides.
+Reconcile the two directories on a schedule and alert on the difference. No console can see both sides, so the comparison has to be built. That's the only control that produces a count you can trust.
+
+Treat synchronization scope as an access control with a documented owner and a review date, because deciding what syncs decides which identities exist in the cloud at all.
+
+## What I'd do differently in a real environment
+
+Nobody would move a terminated account into an out-of-scope container without knowing it deletes the cloud identity. That needs to be written into the off-boarding procedure, not discovered.
+
+I'd also want the excluded service accounts covered by something. Keeping them out of the cloud is defensible, but it means they're outside Conditional Access, access reviews, and risk detection, and that trade needs a compensating control on-premises rather than being an accident of a filter.
 
 ## Screenshots
 
