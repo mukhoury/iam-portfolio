@@ -66,9 +66,8 @@ fd = fit("The user kept their access. Zero failures reported.", REG, 40, CONTENT
 center("6 of 6 tasks complete.", fd, 228, SUB)
 center("The user kept their access. Zero failures reported.", fd, 282, SUB)
 rule(360, 0.6)
-center("Mukhtar Houry", fit("Mukhtar Houry", BOLD, 52, CONTENT), 385, WHITE)
-center("CompTIA Security+  ·  ISC2 CC", fit("CompTIA Security+  ·  ISC2 CC", REG, 32, CONTENT), 455, MID)
+center("Mukhtar Houry", fit("Mukhtar Houry", BOLD, 52, CONTENT), 398, WHITE)
 URL = "mukhoury.github.io/iam-portfolio/leaver"
-center(URL, fit(URL, REG, 36, CONTENT), 525, SUB)
+center(URL, fit(URL, REG, 36, CONTENT), 492, SUB)
 img.resize((W, H), Image.LANCZOS).save(OUT, "PNG", optimize=True)
 print("wrote", OUT, W, H)
