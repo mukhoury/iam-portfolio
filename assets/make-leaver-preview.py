@@ -70,7 +70,7 @@ rule(415)
 desc = [
     "6 of 6 tasks complete. Zero failures.",
     "The user kept their access,",
-    "and 8.5 hours later got more back.",
+    "and 8.5 hours later got the rest back.",
 ]
 f_desc = fit(max(desc, key=len), REG, 32, CONTENT)
 for i, line in enumerate(desc):
