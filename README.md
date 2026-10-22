@@ -1,11 +1,10 @@
 # IAM Portfolio: Mukhtar Houry
 
-Hands-on **Identity & Access Management (IAM)** lab work, documented as case studies.
+Hands-on **Identity & Access Management (IAM)** projects, organized by the capability each one demonstrates.
 
 I have 10+ years of real-world IAM experience (identity lifecycle management, RBAC
 design, and access governance across enterprise retail, consulting, and financial
-services). This repo is where I demonstrate that experience in modern, hands-on tooling,
-one reproducible lab at a time.
+services). This repo is where I demonstrate that experience in modern, hands-on tooling.
 
 **Certifications:** CompTIA Security+ · ISC2 Certified in Cybersecurity (CC)
 **Currently building toward:** Microsoft SC-300 (Identity & Access Administrator)
@@ -14,34 +13,59 @@ one reproducible lab at a time.
 
 ## Start here
 
-**[Identity Governance and Lifecycle Automation](labs/2-entra-identity-governance/)** is the one to read first. A termination reported six of six tasks complete and zero failures while the user kept a group. Eight and a half hours later a scheduled onboarding workflow gave the access back, and also reported zero failures.
+**[Leaver](leaver/)** is the one to read first. A termination reported 6 of 6 tasks complete and zero failures while the user kept a group. 8 and a half hours later a scheduled onboarding workflow gave the access back, and also reported zero failures.
 
-Two minutes, and it covers the problem every organization has: what is supposed to happen when somebody joins, changes roles, or leaves.
+Two minutes, and it covers the problem every organization has: what is supposed to happen when somebody leaves, and how you would know if it didn't.
 
-## Labs
+## Tools
 
-| # | Lab | Focus | Tools |
-|---|-----|-------|-------|
-| 1 | [Entra ID Dynamic Groups and Conditional Access](labs/1-entra-dynamic-groups-conditional-access/) | ABAC · dynamic groups · Zero Trust · Conditional Access | Microsoft Entra ID (Premium P2) |
-| 2 | [Identity Governance and Lifecycle Automation](labs/2-entra-identity-governance/) | Access packages · access reviews · PIM · Lifecycle Workflows | Microsoft Entra ID (P2 + ID Governance) |
-| 3 | [Off-boarding Detection and Consent Auditing with PowerShell](labs/3-entra-graph-powershell/) | Graph API · off-boarding detection controls · OAuth consent · just-in-time app privilege | Microsoft Graph PowerShell SDK |
-| 4 | [Hybrid Identity and Directory Synchronization](labs/4-entra-hybrid-identity/) | Source of authority · sync scope as a security control · attribute-driven access · detection gaps | Active Directory Domain Services + Microsoft Entra Connect Sync |
+| Tool | Role |
+|---|---|
+| Microsoft Entra ID (P2 + ID Governance) | Cloud directory, dynamic groups, Conditional Access, PIM, access packages, access reviews, Lifecycle Workflows |
+| Active Directory Domain Services | On-premises directory and source of authority |
+| Microsoft Entra Connect Sync | Hybrid identity synchronization |
+| Microsoft Graph PowerShell SDK | Detection scripts, access review data, consent auditing |
 
-**Short links:** [mukhoury.github.io/iam-portfolio/lab1](https://mukhoury.github.io/iam-portfolio/lab1/) ·
-[lab2](https://mukhoury.github.io/iam-portfolio/lab2/) ·
-[lab3](https://mukhoury.github.io/iam-portfolio/lab3/) ·
-[lab4](https://mukhoury.github.io/iam-portfolio/lab4/)
+---
+
+## Capabilities Built
+
+### Foundations
+
+- [Architecture and Environment](architecture-and-environment/)
+
+### Identity Lifecycle (Joiner, Mover, Leaver)
+
+- [Joiner: Attribute-Driven Provisioning and Onboarding Workflows](joiner/)
+- [Mover: Role Changes and Silent Entitlement Swaps](mover/)
+- [Leaver: Off-boarding That Says It Worked, and How to Catch It When It Didn't](leaver/)
+
+### Identity Governance and Administration (IGA)
+
+- [Access Requests: Approved, Expiring Access Packages](access-requests/)
+- [Access Reviews: Certifying Access, and Not Trusting the Recommendation](access-reviews/)
+- [Privileged Access: Just-in-Time Admin with PIM](privileged-access/)
+
+### Access Management
+
+- [Conditional Access: Requiring MFA Without Locking Out the Tenant](conditional-access/)
+- [App Consent and Least Privilege](app-consent-least-privilege/)
+
+### Hybrid Identity
+
+- [Directory Sync: What the Cloud Can't See](directory-sync/)
 
 ---
 
 ## How to read these
 
-Each lab is a self-contained case study with the same structure:
+Each project follows the same structure:
 
-- **Problem:** the access-control challenge being solved
-- **Solution:** the design decision and why
-- **Steps:** what I actually did, reproducibly
-- **Security outcome:** the control that was achieved and how it maps to real IAM job functions
-- **Artifacts:** screenshots and evidence (sanitized)
+- **The risk:** the access-control problem being solved
+- **What I built:** the design and the decisions behind it
+- **What I found:** what actually happened, including what broke
+- **What I'd recommend:** the control I'd put in place
+- **What I'd do differently in a real environment**
+- **Screenshots and evidence:** sanitized, from the environments I built
 
 **Ground rule for everything here:** if I can't explain it, it isn't in this repo.
