@@ -59,12 +59,16 @@ def rule(y, frac=0.72):
     d.line([(w/2 - rw/2, y*S), (w/2 + rw/2, y*S)], fill=RULE, width=max(1, int(1.4*S)))
 
 # ---------- content ----------
-center("LEAVER", fit("LEAVER", BOLD, 46, CONTENT, tr=8), 52, BLUE, tr=8)
-ft = fit("Off-boarding That Says It Worked", BOLD, 96, CONTENT)
-center("Off-boarding That", ft, 120, WHITE)
-center("Says It Worked", ft, 230, WHITE)
-fd = fit("6 of 6 tasks complete. Access still there.", REG, 52, CONTENT)
-center("6 of 6 tasks complete. Access still there.", fd, 375, SUB)
-center("Mukhtar Houry", fit("Mukhtar Houry", BOLD, 54, CONTENT), 490, WHITE)
+center("IAM PORTFOLIO", fit("IAM PORTFOLIO", BOLD, 30, CONTENT, tr=6), 52, BLUE, tr=6)
+center("Leaver: Off-boarding That Says It Worked", fit("Leaver: Off-boarding That Says It Worked", BOLD, 70, CONTENT), 100, WHITE)
+rule(200, 0.6)
+fd = fit("The user kept their access. Zero failures reported.", REG, 40, CONTENT)
+center("6 of 6 tasks complete.", fd, 228, SUB)
+center("The user kept their access. Zero failures reported.", fd, 282, SUB)
+rule(360, 0.6)
+center("Mukhtar Houry", fit("Mukhtar Houry", BOLD, 52, CONTENT), 385, WHITE)
+center("CompTIA Security+  ·  ISC2 CC", fit("CompTIA Security+  ·  ISC2 CC", REG, 32, CONTENT), 455, MID)
+URL = "mukhoury.github.io/iam-portfolio/leaver"
+center(URL, fit(URL, REG, 36, CONTENT), 525, SUB)
 img.resize((W, H), Image.LANCZOS).save(OUT, "PNG", optimize=True)
 print("wrote", OUT, W, H)
