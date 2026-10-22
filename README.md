@@ -4,7 +4,7 @@ Hands-on **Identity & Access Management (IAM)** projects, organized by the capab
 
 I have 10+ years of real-world IAM experience (identity lifecycle management, RBAC
 design, and access governance across enterprise retail, consulting, and financial
-services).
+services). This repo is where I demonstrate that experience in modern, hands-on tooling.
 
 **Certifications:** CompTIA Security+ · ISC2 Certified in Cybersecurity (CC)
 **Currently building toward:** Microsoft SC-300 (Identity & Access Administrator)
