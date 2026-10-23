@@ -2,9 +2,10 @@
 
 Hands-on **Identity & Access Management (IAM)** projects, organized by the capability each one demonstrates.
 
-I have 10+ years of real-world IAM experience (identity lifecycle management, RBAC
-design, and access governance across enterprise retail, consulting, and financial
-services). This repo is where I demonstrate that experience in modern, hands-on tooling.
+I spent 10 years in retail and operations management, including leading a team of 12
+to 15 at Verizon, where I handled their access from hire to departure. This repo is
+where I rebuilt that same work in Microsoft Entra ID, covering lifecycle automation,
+access governance, privileged access and hybrid sync with Active Directory.
 
 **Certifications:** CompTIA Security+ · ISC2 Certified in Cybersecurity (CC)
 **Currently building toward:** Microsoft SC-300 (Identity & Access Administrator)
