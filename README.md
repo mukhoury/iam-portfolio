@@ -52,6 +52,10 @@ Two minutes, and it covers the problem every organization has: what is supposed 
 - [Conditional Access: Requiring MFA Without Locking Out the Tenant](conditional-access/)
 - [App Consent and Least Privilege](app-consent-least-privilege/)
 
+### Identity Support
+
+- [Identity Support: Tickets From Lost Phones to Lockouts](identity-support/)
+
 ### Hybrid Identity
 
 - [Directory Sync: What the Cloud Can't See](directory-sync/)

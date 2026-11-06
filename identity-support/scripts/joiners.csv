@@ -1,0 +1,11 @@
+EmployeeId,FirstName,LastName,DisplayName,UserPrincipalName,Email,JobTitle,Department,CompanyName,EmployeeType,HireDate,OfficeLocation,UsageLocation
+1002,Priya,Nair,Priya Nair,priya.nair@hids2.onmicrosoft.com,priya.nair@hids2.onmicrosoft.com,Accounts Payable Specialist,Finance,Houry Identity Solutions,Employee,2026-11-02,Remote,US
+1003,Marcus,Bell,Marcus Bell,marcus.bell@hids2.onmicrosoft.com,marcus.bell@hids2.onmicrosoft.com,Staff Accountant,Finance,Houry Identity Solutions,Employee,2026-11-02,Remote,US
+1004,Elena,Vasquez,Elena Vasquez,elena.vasquez@hids2.onmicrosoft.com,elena.vasquez@hids2.onmicrosoft.com,Payroll Analyst,Finance,Houry Identity Solutions,Employee,2026-11-02,Remote,US
+1005,Tom,Okafor,Tom Okafor,tom.okafor@hids2.onmicrosoft.com,tom.okafor@hids2.onmicrosoft.com,Controller,Finance,Houry Identity Solutions,Employee,2026-11-02,Remote,US
+1006,Grace,Lindholm,Grace Lindholm,grace.lindholm@hids2.onmicrosoft.com,grace.lindholm@hids2.onmicrosoft.com,Financial Analyst,Finance,Houry Identity Solutions,Employee,2026-11-02,Remote,US
+1007,Sam,Whitaker,Sam Whitaker,sam.whitaker@hids2.onmicrosoft.com,sam.whitaker@hids2.onmicrosoft.com,Help Desk Technician,IT,Houry Identity Solutions,Employee,2026-11-02,Remote,US
+1008,Aisha,Rahman,Aisha Rahman,aisha.rahman@hids2.onmicrosoft.com,aisha.rahman@hids2.onmicrosoft.com,Systems Administrator,IT,Houry Identity Solutions,Employee,2026-11-02,Remote,US
+1009,Leo,Tran,Leo Tran,leo.tran@hids2.onmicrosoft.com,leo.tran@hids2.onmicrosoft.com,Network Engineer,IT,Houry Identity Solutions,Employee,2026-11-02,Remote,US
+1010,Nina,Kowalski,Nina Kowalski,nina.kowalski@hids2.onmicrosoft.com,nina.kowalski@hids2.onmicrosoft.com,IT Support Analyst,IT,Houry Identity Solutions,Employee,2026-11-02,Remote,US
+1011,Owen,Fischer,Owen Fischer,owen.fischer@hids2.onmicrosoft.com,owen.fischer@hids2.onmicrosoft.com,Security Analyst,IT,Houry Identity Solutions,Employee,2026-11-02,Remote,US
