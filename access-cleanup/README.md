@@ -70,4 +70,4 @@ Access piles up quietly. Accounts get created and never used, groups and apps ou
 | ![Activated](screenshots/12-global-admin-activated-2-hours.png) | Just-in-time: Global Admin activated for 2 hours. |
 | ![Scoped role](screenshots/13-helpdesk-scoped-to-au-finance.png) | Help desk role scoped to the Finance administrative unit. |
 
-**Related:** [Privileged Access](../privileged-access/) · [App Consent and Least Privilege](../app-consent-least-privilege/) · [Identity Support](../identity-support/) · [Access Reviews](../access-reviews/)
+**Related:** [Privileged Access](../privileged-access/) · [App Consent and Least Privilege](../app-consent-least-privilege/) · [IAM Operations](../iam-operations/) · [Access Reviews](../access-reviews/)

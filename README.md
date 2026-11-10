@@ -52,9 +52,9 @@ Two minutes, and it covers the problem every organization has: what is supposed 
 - [Conditional Access: Requiring MFA Without Locking Out the Tenant](conditional-access/)
 - [App Consent and Least Privilege](app-consent-least-privilege/)
 
-### Identity Support
+### IAM Operations
 
-- [Identity Support: Tickets From Lost Phones to Lockouts](identity-support/)
+- [IAM Operations: Tickets From Lost Phones to Lockouts](iam-operations/)
 - [Access Cleanup and Remediation: Finding What Nobody Owns](access-cleanup/)
 
 ### Hybrid Identity
