@@ -55,6 +55,7 @@ Two minutes, and it covers the problem every organization has: what is supposed 
 ### Identity Support
 
 - [Identity Support: Tickets From Lost Phones to Lockouts](identity-support/)
+- [Access Cleanup and Remediation: Finding What Nobody Owns](access-cleanup/)
 
 ### Hybrid Identity
 
